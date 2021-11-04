@@ -14,9 +14,7 @@ export default function App() {
   //   }
   // };
 
-  const [bottomSheetState, setBottomSheetState] = useState<BottomSheetState>(
-    'collapsed'
-  );
+  const [active, setActive] = useState(false);
 
   const renderBackground = () =>
     new Array(100)
@@ -24,40 +22,29 @@ export default function App() {
       .map((_, i) => <Text key={`bg-${i}`}>Background {i}</Text>);
 
   const renderPullUpContent = () =>
-    new Array(100)
+    new Array(5)
       .fill('')
       .map((_, i) => <Text key={`content-${i}`}>Content {i}</Text>);
 
-  const onSheetChanged = useCallback((newState: BottomSheetState) => {
-    setBottomSheetState(newState);
+  const onPress = useCallback(() => {
+    setActive(!active);
+  }, [active]);
+
+  const onLayout = useCallback(evt => {
+    console.log(evt.nativeEvent);
   }, []);
 
-  const onPress = useCallback(() => {
-    const target = bottomSheetState === 'hidden' ? 'collapsed' : 'hidden';
-    setBottomSheetState(target);
-  }, [bottomSheetState]);
-
   return (
-    <PullUp
-      sheetState={bottomSheetState}
-      onSheetStateChanged={onSheetChanged}
-      hideable={true}
-      collapsible={true}
-      //expandedOffset={240}
-      //fitToContents={false}
-      //halfExpandedRatio={0.8}
-      peekHeight={360}
-    >
-      <ScrollView>
-        <Button onPress={onPress} title="Toggle" />
-        {renderBackground()}
-      </ScrollView>
-      <View style={{ flex: 1, backgroundColor: '#aaa' }}>
-        <Text>Testing</Text>
-        <ScrollView style={{ height: '100%' }}>
+    <ScrollView>
+      <Button onPress={onPress} title="Toggle" />
+      {renderBackground()}
+
+      <PullUp active={active}>
+        <View onLayout={onLayout} style={{ flexGrow: 0, flexShrink: 1 }}>
           {renderPullUpContent()}
-        </ScrollView>
-      </View>
-    </PullUp>
+        </View>
+      </PullUp>
+
+    </ScrollView>
   );
 }
