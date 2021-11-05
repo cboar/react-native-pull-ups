@@ -15,6 +15,7 @@ export default function App() {
   // };
 
   const [active, setActive] = useState(false);
+  const [numItems, setNumItems] = useState(10);
 
   const renderBackground = () =>
     new Array(100)
@@ -22,7 +23,7 @@ export default function App() {
       .map((_, i) => <Text key={`bg-${i}`}>Background {i}</Text>);
 
   const renderPullUpContent = () =>
-    new Array(5)
+    new Array(numItems)
       .fill('')
       .map((_, i) => <Text key={`content-${i}`}>Content {i}</Text>);
 
@@ -32,6 +33,9 @@ export default function App() {
 
   const onLayout = useCallback(evt => {
     console.log(evt.nativeEvent);
+    //setTimeout(() => {
+    //  setNumItems(10);
+    //}, 2000);
   }, []);
 
   return (
@@ -40,7 +44,8 @@ export default function App() {
       {renderBackground()}
 
       <PullUp active={active}>
-        <View onLayout={onLayout} style={{ flexGrow: 0, flexShrink: 1 }}>
+        <View
+          style={{ paddingHorizontal: 16, paddingVertical: 32, backgroundColor: 'red' }}>
           {renderPullUpContent()}
         </View>
       </PullUp>

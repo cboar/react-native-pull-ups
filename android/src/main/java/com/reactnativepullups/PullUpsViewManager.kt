@@ -22,14 +22,14 @@ class PullUpsViewManager : ViewGroupManager<LinearLayout>() {
 
   override fun getName() = "RNPullUpView"
   private lateinit var dialog: BottomSheetDialog
-  private lateinit var contents: LinearLayout
+  private lateinit var contents: CustomCoordinatorLayout
   private lateinit var ctx: ThemedReactContext
   
   private var active: Boolean = false
 
   override fun createViewInstance(reactContext: ThemedReactContext): LinearLayout {
     ctx = reactContext
-    contents = LinearLayout(reactContext)
+    contents = CustomCoordinatorLayout(reactContext)
 
     dialog = object : BottomSheetDialog(reactContext) {
       override fun onCreate(bundle: Bundle?){
@@ -41,6 +41,7 @@ class PullUpsViewManager : ViewGroupManager<LinearLayout>() {
 
   override fun addView(parent: LinearLayout?, child: View, index: Int) {
     contents.addView(child)
+    contents.requestLayout()
     //contents = child as ReactViewGroup
   }
 
@@ -52,21 +53,8 @@ class PullUpsViewManager : ViewGroupManager<LinearLayout>() {
       dialog.dismiss();
     } else {
 
-      //var wrapper = LayoutInflater.from(ctx).inflate(
-      //  R.layout.dialog_contents, null
-      //) as ViewGroup
-      //var linear = wrapper.findViewById(R.id.internalLayout) as LinearLayout
-
-      //wrapper.addView(contents)
       dialog.setContentView(contents)
-
-
-      //val bottomSheet = dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
-      //Log.d("BOTTOMSHEET", "height: " + bottomSheet?.layoutParams?.height)
-      //bottomSheet?.layoutParams?.height = -2
-      //var behavior = BottomSheetBehavior.from(contents.getParent() as View);
-      //behavior.setFitToContents(true);
-      dialog.show();
+      dialog.show()
     }
     active = nowActive
   }
