@@ -31,11 +31,9 @@ export default function App() {
     setActive(!active);
   }, [active]);
 
-  const onLayout = useCallback(evt => {
-    console.log(evt.nativeEvent);
-    //setTimeout(() => {
-    //  setNumItems(10);
-    //}, 2000);
+  const onThing = useCallback(evt => {
+    if(evt === 'hidden') setActive(false)
+    console.log(evt);
   }, []);
 
   return (
@@ -43,7 +41,9 @@ export default function App() {
       <Button onPress={onPress} title="Toggle" />
       {renderBackground()}
 
-      <PullUp active={active}>
+      <PullUp
+        onSheetStateChanged={onThing}
+        active={active}>
         <View
           style={{ paddingHorizontal: 16, paddingVertical: 32, backgroundColor: 'red' }}>
           {renderPullUpContent()}

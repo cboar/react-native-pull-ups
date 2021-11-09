@@ -21,7 +21,6 @@ class CustomCoordinatorLayout : CoordinatorLayout {
   override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec)
     this.getChildAt(0)?.let {
-      Log.d("PULLUPS", "height:" + it.height)
       setMeasuredDimension(widthMeasureSpec, it.height)
     }
   }
