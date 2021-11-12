@@ -21,7 +21,8 @@ const styles = StyleSheet.create({
   sheet: { backgroundColor: 'white' },
 });
 
-export const PullUpsView = requireNativeComponent('RNPullUpView');
+const PullUpsView = requireNativeComponent('RNPullUpView');
+const ContentView = requireNativeComponent('RNPullUpContentView');
 
 const PullUps = (props: PullUpProps) => {
   const { children, renderContent, contentStyle, onSheetStateChanged, ...rest } = props;
@@ -37,15 +38,10 @@ const PullUps = (props: PullUpProps) => {
     return () => subscription.remove();
   }, [onSheetStateChanged]);
 
-  const onLayout = useCallback((evt) => {
-    console.log(evt.nativeEvent.layout.height)
-    console.log(this.refs)
-  })
-
   return (
     <PullUpsView {...rest} style={[ styles.primary, props.style ]}>
       { children }
-      <View style={[ styles.sheet, props.contentStyle ]} onLayout={onLayout}>{ renderContent() }</View>
+      <ContentView style={[ styles.sheet, props.contentStyle ]}>{ renderContent() }</ContentView>
     </PullUpsView>
   );
 };

@@ -1,5 +1,10 @@
 package com.reactnativepullups
 
+import android.content.Context
+import com.facebook.yoga.YogaMeasureMode
+import com.facebook.react.bridge.ReadableMap
+import android.graphics.Rect
+
 import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +19,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule.RCTDeviceEventEm
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.ViewGroupManager
 import com.facebook.react.uimanager.annotations.ReactProp
+import com.facebook.react.views.view.ReactViewGroup
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.slider.LabelFormatter
@@ -26,7 +32,7 @@ class PullUpsViewManager : ViewGroupManager<CoordinatorLayout>() {
 
   private lateinit var context: ThemedReactContext
 
-  private lateinit var container: RelativeLayout
+  private lateinit var container: ViewGroup
   private lateinit var content: CustomCoordinatorLayout
   private lateinit var dialog: BottomSheetDialog
   private lateinit var behavior: BottomSheetBehavior<*>
@@ -165,11 +171,13 @@ class PullUpsViewManager : ViewGroupManager<CoordinatorLayout>() {
       container.addView(child)
     } else {
       content.addView(child)
-      child?.addOnLayoutChangeListener(object : View.OnLayoutChangeListener {
-        override fun onLayoutChange(v: View?, left: Int, top: Int, right: Int, bottom: Int, oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int){
-          content.requestLayout()
-        }
-      })
+
+      //child?.addOnLayoutChangeListener(object : View.OnLayoutChangeListener {
+      //  override fun onLayoutChange(v: View?, left: Int, top: Int, right: Int, bottom: Int, oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int){
+      //    Log.d("PULLUPS", "Child changed")
+      //    content.requestLayout()
+      //  }
+      //})
     } 
   }
 
@@ -194,5 +202,7 @@ class PullUpsViewManager : ViewGroupManager<CoordinatorLayout>() {
 
   override fun getChildCount(parent: CoordinatorLayout)
     = container.childCount + content.childCount
+
+  override fun needsCustomLayoutForChildren() = true
 
 }

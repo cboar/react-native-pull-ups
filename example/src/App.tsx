@@ -40,7 +40,7 @@ export default function App() {
 
   return (
     <PullUp
-      dialog={true}
+      dialog={false}
       state={bottomSheetState}
       onSheetStateChanged={onSheetChanged}
       renderContent={CoolBeans}
@@ -50,7 +50,7 @@ export default function App() {
       //expandedOffset={240}
       peekHeight={200}
     >
-      <ScrollView>
+      <ScrollView onLayout={evt => console.log('SV', evt.nativeEvent)}>
         <Button onPress={onPress} title="Toggle" />
         <Button onPress={() => setUseDialog(!useDialog)} title="Toggle dialog" />
         {renderBackground()}

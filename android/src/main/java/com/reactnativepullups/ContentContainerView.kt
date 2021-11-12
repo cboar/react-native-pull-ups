@@ -13,33 +13,30 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.widget.NestedScrollView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 
-class CustomCoordinatorLayout : RelativeLayout {
+class ContentContainerView : RelativeLayout {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
   
-  /* Sets the height of the layout to that of its first child's */
   override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-    var child = getChildAt(0)
-    Log.d("PULLUPS", "CCL ${child.height} ${child.measuredHeight} ${MeasureSpec.getSize(heightMeasureSpec)}")
-    super.onMeasure(
-      widthMeasureSpec,
-      if(child == null)
-        heightMeasureSpec
-      else 
-        MeasureSpec.makeMeasureSpec(child.measuredHeight, MeasureSpec.EXACTLY)
+    Log.d("PULLUPS", "onMeasure ${MeasureSpec.getSize(widthMeasureSpec)} ${MeasureSpec.getSize(heightMeasureSpec)} ${getWidth()} ${getHeight()}")
+    setMeasuredDimension(
+      MeasureSpec.getSize(widthMeasureSpec),
+      MeasureSpec.getSize(heightMeasureSpec)
     )
+    if(height != measuredHeight){
+      invalidate()
+      (parent as View).invalidate()
+    }
   }
 
   override fun onLayout(a: Boolean, b: Int, c: Int, d: Int, e: Int){
-    Log.d("PULLUPS", "CCL onLayout $a $b $c $d $e")
-    super.onLayout(a,b,c,d,e)
+    Log.d("PULLUPS", "onLayout $a $b $c $d $e")
   }
 
   override fun requestLayout(){
-    var child = getChildAt(0)
-    Log.d("PULLUPS", "CCL requestLayout " + child?.height + "," + child?.measuredHeight)
+    Log.d("PULLUPS", "requestLayout")
     super.requestLayout()
   }
 
